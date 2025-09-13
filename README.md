@@ -15,7 +15,6 @@ This ensures globally unique, time-sortable IDs that don't reveal the total coun
 - 🎯 **Custom generators** - Generate models with Snowflake IDs by default
 - 📊 **Status monitoring** - Built-in rake tasks for management
 - ✨ **Custom `t.snowflake` type** - Clean, Rails-like migrations
-- 🎭 **Smart detection** - Automatically detects and enables Snowflake columns
 
 ## Installation
 
@@ -35,17 +34,51 @@ $ rails generate rails_snowflake:install
 
 **That's it!** Just use `t.snowflake` in your migrations and everything works automatically.
 
+### For additional snowflake columns (non-primary key):
 ```ruby
+class CreatePosts < ActiveRecord::Migration[8.0]
+  def change
+    create_table :posts do |t|
+      t.string :title
+      t.text :content
+      t.snowflake :external_id  # Additional snowflake column
+      t.timestamps
+    end
+  end
+end
+```
+
+### For snowflake primary keys:
+```ruby
+# Option 1: Using the dedicated method (recommended)
 class CreateUsers < ActiveRecord::Migration[8.0]
   def change
     create_table :users, id: false do |t|
-      t.snowflake :id, primary_key: true
+      t.snowflake :id, primary_key: true  # Snowflake primary key
       t.string :name
       t.timestamps
     end
   end
 end
 ```
+
+### Generator Support
+
+You can now use snowflake fields in Rails generators:
+
+```bash
+# Generate a model with a snowflake field
+rails generate model Post title:string external_id:snowflake
+
+# This will create a migration like:
+# create_table :posts do |t|
+#   t.string :title
+#   t.snowflake :external_id
+#   t.timestamps
+# end
+```
+
+**Note**: When using `t.snowflake :id` directly, Rails will complain about redefining the primary key. Always use `create_table :table_name, id: false` when you want a snowflake primary key.
 
 ## Usage
 
@@ -89,7 +122,7 @@ end
 
 **That's it!** The gem handles everything else automatically:
 - ✅ Database function creation
-- ✅ Sequence management  
+- ✅ Sequence management
 - ✅ Proper ID generation
 - ✅ Model integration
 
