@@ -144,10 +144,17 @@ GEM
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
+    pg (1.6.2)
+    pg (1.6.2-aarch64-linux)
+    pg (1.6.2-aarch64-linux-musl)
+    pg (1.6.2-arm64-darwin)
+    pg (1.6.2-x86_64-darwin)
+    pg (1.6.2-x86_64-linux)
+    pg (1.6.2-x86_64-linux-musl)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
-    prism (1.5.0)
+    prism (1.5.1)
     psych (5.2.6)
       date
       stringio
@@ -229,14 +236,6 @@ GEM
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    sqlite3 (2.7.3-aarch64-linux-gnu)
-    sqlite3 (2.7.3-aarch64-linux-musl)
-    sqlite3 (2.7.3-arm-linux-gnu)
-    sqlite3 (2.7.3-arm-linux-musl)
-    sqlite3 (2.7.3-arm64-darwin)
-    sqlite3 (2.7.3-x86_64-darwin)
-    sqlite3 (2.7.3-x86_64-linux-gnu)
-    sqlite3 (2.7.3-x86_64-linux-musl)
     stringio (3.1.7)
     thor (1.4.0)
     timeout (0.4.3)
@@ -264,10 +263,10 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  pg
   puma
   rails_snowflake!
   rubocop-rails-omakase
-  sqlite3
 
 BUNDLED WITH
    2.7.2

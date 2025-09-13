@@ -1,0 +1,34 @@
+# frozen_string_literal: true
+
+class InstallRailsSnowflake < ActiveRecord::Migration[8.0]
+  def up
+    # Create the timestamp_id PostgreSQL function
+    RailsSnowflake::Id.define_timestamp_id
+
+    puts ""
+    puts "RailsSnowflake installed!"
+    puts ""
+    puts "Now you can use snowflake IDs in your migrations:"
+    puts ""
+    puts "  # For new tables with snowflake primary key:"
+    puts "  create_table :users, id: false do |t|"
+    puts "    t.snowflake :id"
+    puts "    t.string :name"
+    puts "    t.timestamps"
+    puts "  end"
+    puts ""
+    puts "  # For additional snowflake columns:"
+    puts "  create_table :posts do |t|"
+    puts "    t.references :user"
+    puts "    t.text :content"
+    puts "    t.snowflake :external_id  # non-primary key snowflake"
+    puts "    t.timestamps"
+    puts "  end"
+    puts ""
+  end
+
+  def down
+    # Remove the timestamp_id function
+    execute "DROP FUNCTION IF EXISTS timestamp_id(text)"
+  end
+end
