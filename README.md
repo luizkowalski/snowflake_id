@@ -123,8 +123,6 @@ end
 **That's it!** The gem handles everything else automatically:
 - ✅ Database function creation
 - ✅ Sequence management
-- ✅ Proper ID generation
-- ✅ Model integration
 
 ### Manual Migration Setup
 
@@ -147,7 +145,7 @@ end
 
 ```ruby
 user = User.create!(name: "Alice")
-user.id  # => 1766655742123000001 (Snowflake ID)
+user.id  # => 1766655742123000001
 
 # Convert ID back to timestamp
 RailsSnowflake::Generator.to_time(user.id)
