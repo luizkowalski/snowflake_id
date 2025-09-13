@@ -1,5 +1,8 @@
 module RailsSnowflake
   class Railtie < ::Rails::Railtie
-    # Just a simple railtie, no tasks
+    # Hook into database tasks to ensure sequences exist
+    rake_tasks do
+      load "rails_snowflake/database_tasks.rb"
+    end
   end
 end
