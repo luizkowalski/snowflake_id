@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+class InstallRailsSnowflake < ActiveRecord::Migration<%= migration_version %>
+  def up
+    # Create the timestamp_id PostgreSQL function
+    RailsSnowflake::Id.define_timestamp_id
+  end
+
+  def down
+    # Remove the timestamp_id function
+    execute "DROP FUNCTION IF EXISTS timestamp_id(text)"
+  end
+end
