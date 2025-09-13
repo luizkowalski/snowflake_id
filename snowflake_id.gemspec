@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version     = SnowflakeId::VERSION
   spec.authors     = [ "Luiz Eduardo Kowalski" ]
   spec.email       = [ "luizeduardokowalski@gmail.com" ]
-  spec.homepage    = "https://github.com/luizkowalski/snowflake_id"
+  spec.homepage    = "https://github.com/luizkowalski/snowflake_id/"
   spec.summary     = "Generate Snowflake IDs in Rails models."
   spec.description = "A Rails plugin that provides a simple way to generate unique Snowflake IDs for your ActiveRecord models."
   spec.license     = "MIT"
@@ -16,12 +16,14 @@ Gem::Specification.new do |spec|
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/luizkowalski/snowflake_id"
-  spec.metadata["changelog_uri"] = "https://github.com/luizkowalski/snowflake_id/CHANGELOG.md"
+  spec.metadata["changelog_uri"] = "https://github.com/luizkowalski/snowflake_id/CHAGNES.md"
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
   spec.add_dependency "rails", ">= 7.2"
-  spec.add_dependency "zeitwerk"
+  spec.add_dependency "zeitwerk", "~> 2.7"
+
+  spec.required_ruby_version = ">= 3.2"
 end

@@ -3,7 +3,7 @@ PATH
   specs:
     snowflake_id (0.1.0)
       rails (>= 7.2)
-      zeitwerk
+      zeitwerk (~> 2.7)
 
 GEM
   remote: https://rubygems.org/
