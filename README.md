@@ -114,8 +114,8 @@ execute("ALTER TABLE table_name ALTER COLUMN id SET DEFAULT timestamp_id('table_
 ## Requirements
 
 - **Database**: PostgreSQL (uses PostgreSQL-specific functions)
-- **Rails**: 7.0+ (may work with earlier versions)
-- **Ruby**: 3.0+
+- **Rails**: 7.2+ (may work with earlier versions)
+- **Ruby**: 3.2+
 
 ## How it Works
 
