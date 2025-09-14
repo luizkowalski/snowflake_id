@@ -21,9 +21,9 @@ Add this line to your application's Gemfile:
 gem "rails-snowflake"
 ```
 
-And then execute:
+And then execute the installer (note the underscore):
 ```bash
-rails generate snowflake:install
+rails generate rails_snowflake:install
 ```
 
 ## Quick Start
