@@ -15,7 +15,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ruby-3.4.5
+          ruby-version: 3.4
           bundler-cache: true
 
       - name: Lint code for consistent style
@@ -23,17 +23,26 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ["3.2", "3.3", "3.4"]
+        rails: ["rails-7.1", "rails-7.2", "rails-8.0"]
+        postgres: ["15", "16"]
     services:
       postgres:
-        image: postgres:16
+        image: postgres:${{ matrix.postgres }}
         ports:
           - 5432:5432
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
           POSTGRES_DB: rails_snowflake_test
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Install packages
@@ -45,19 +54,28 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ruby-3.4.5
+          ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
 
-      - name: Prepare test database
+      - name: Install Appraisal gemfiles
+        run: bundle exec appraisal install
+
+      - name: Show environment
+        run: |
+          ruby -v
+          bundle exec appraisal list
+          psql --version
+
+      - name: Prepare test database (migrate)
         env:
           RAILS_ENV: test
           PGUSER: postgres
           PGPASSWORD: postgres
-        run: bundle exec rake db:migrate
+        run: bundle exec appraisal ${{ matrix.rails }} rake db:migrate
 
       - name: Run tests
         env:
           RAILS_ENV: test
           PGUSER: postgres
           PGPASSWORD: postgres
-        run: bundle exec rake
+        run: bundle exec appraisal ${{ matrix.rails }} rake
