@@ -1,5 +1,7 @@
 # Rails::Snowflake
 
+[![CI](https://github.com/luizkowalski/snowflake_id/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/luizkowalski/snowflake_id/actions/workflows/ci.yml)
+
 A Rails plugin that provides Snowflake-like IDs for your ActiveRecord models with minimal configuration.
 
 Snowflake IDs are 64-bit integers that contain:
