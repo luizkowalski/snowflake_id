@@ -13,7 +13,3 @@ module Rails
     class Error < StandardError; end
   end
 end
-
-# Generator namespace (separate from Rails::Snowflake)
-module Snowflake
-end
