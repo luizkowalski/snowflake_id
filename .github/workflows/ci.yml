@@ -71,7 +71,7 @@ jobs:
           RAILS_ENV: test
           PGUSER: postgres
           PGPASSWORD: postgres
-        run: bundle exec appraisal ${{ matrix.rails }} test/dummy/bin/rails db:migrate
+        run: bundle exec appraisal ${{ matrix.rails }} db:migrate
 
       - name: Run tests
         env:

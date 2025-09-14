@@ -1,42 +1,54 @@
 # frozen_string_literal: true
 
-# Hook into Rails database tasks to ensure snowflake sequences exist
+# Ensures that any tables using a snowflake primary key (:id with timestamp_id default)
+# have their backing <table>_id_seq sequences present. This is necessary for tables
+# created with `id: false` and a subsequent `t.snowflake :id, primary_key: true` where
+# Rails does not auto-create the normal sequence.
 def ensure_snowflake_sequences
-  return unless defined?(ActiveRecord::Base)
-
   begin
-    if ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
-      Rails.logger.debug "Rails::Snowflake: Ensure sequences exist for `timestamp_id` columns"
-      Rails::Snowflake::Id.ensure_id_sequences_exist
-    else
-      raise "Rails::Snowflake: Unsupported database adapter. Only PostgreSQL is supported. Current adapter: #{ActiveRecord::Base.connection.adapter_name}"
+    # Avoid establishing a new connection too early; skip if not connected yet.
+    return unless ActiveRecord::Base.connection_pool.connected?
+
+    adapter = ActiveRecord::Base.connection.adapter_name
+    unless adapter == "PostgreSQL"
+      Rails.logger.debug("Rails::Snowflake: Skipping sequence check (adapter=#{adapter})") if defined?(Rails)
+      return
     end
-  rescue ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
-    Rails.logger.warn "Rails::Snowflake: Could not ensure sequences: #{e.message}"
+
+    Rails.logger.debug "Rails::Snowflake: Ensuring sequences for timestamp_id columns" if defined?(Rails)
+    Rails::Snowflake::Id.ensure_id_sequences_exist
+  rescue ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished => e
+    Rails.logger.debug "Rails::Snowflake: Skipping sequence ensure (#{e.class}: #{e.message})" if defined?(Rails)
+  rescue StandardError => e
+    Rails.logger.warn "Rails::Snowflake: Unexpected error while ensuring sequences: #{e.class}: #{e.message}" if defined?(Rails)
   end
 end
 
-# Enhance existing Rails database tasks by adding our hook to them
-if Rake::Task.task_defined?("db:migrate")
-  Rake::Task["db:migrate"].enhance do
+def enhance_snowflake_db_task(name)
+  return unless Rake::Task.task_defined?(name)
+
+  Rake::Task[name].enhance do
     ensure_snowflake_sequences
   end
 end
 
-if Rake::Task.task_defined?("db:schema:load")
-  Rake::Task["db:schema:load"].enhance do
-    ensure_snowflake_sequences
-  end
-end
+# Enhance a broad set of lifecycle tasks; migrate first so tests pick it up.
+%w[
+  db:migrate
+  db:setup
+  db:prepare
+  db:reset
+  db:schema:load
+  db:structure:load
+  db:seed
+  db:test:prepare
+].each { |t| enhance_snowflake_db_task(t) }
 
-if Rake::Task.task_defined?("db:structure:load")
-  Rake::Task["db:structure:load"].enhance do
-    ensure_snowflake_sequences
-  end
-end
-
-if Rake::Task.task_defined?("db:seed")
-  Rake::Task["db:seed"].enhance do
-    ensure_snowflake_sequences
+# As an additional safety net, ensure sequences right after environment loads in a Rake context.
+if defined?(Rake.application)
+  at_exit do
+    # No-op outside rake invocation of db tasks; we only want to run if a db:* task was invoked.
+    invoked = Rake.application.top_level_tasks.any? { |t| t.start_with?("db:") }
+    ensure_snowflake_sequences if invoked
   end
 end
