@@ -43,12 +43,3 @@ end
   db:seed
   db:test:prepare
 ].each { |t| enhance_snowflake_db_task(t) }
-
-# As an additional safety net, ensure sequences right after environment loads in a Rake context.
-if defined?(Rake.application)
-  at_exit do
-    # No-op outside rake invocation of db tasks; we only want to run if a db:* task was invoked.
-    invoked = Rake.application.top_level_tasks.any? { |t| t.start_with?("db:") }
-    ensure_snowflake_sequences if invoked
-  end
-end

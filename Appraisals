@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Appraisals
 # Run `bundle exec appraisal install` to generate the gemfiles under gemfiles/.
 # Then run tests with `bundle exec appraisal <rails_version> rake`.
