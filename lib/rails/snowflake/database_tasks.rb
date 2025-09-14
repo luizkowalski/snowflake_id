@@ -8,6 +8,8 @@ def ensure_snowflake_sequences
     if ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
       Rails.logger.debug "Rails::Snowflake: Ensure sequences exist for `timestamp_id` columns"
       Rails::Snowflake::Id.ensure_id_sequences_exist
+    else
+      raise "Rails::Snowflake: Unsupported database adapter. Only PostgreSQL is supported. Current adapter: #{ActiveRecord::Base.connection.adapter_name}"
     end
   rescue ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
     Rails.logger.warn "Rails::Snowflake: Could not ensure sequences: #{e.message}"
