@@ -1,4 +1,6 @@
-class CreateTestModels < ActiveRecord::Migration[8.0]
+# frozen_string_literal: true
+
+class CreateTestModels < ActiveRecord::Migration[7.1]
   def change
     # Test model with snowflake primary key
     create_table :users, id: false do |t|

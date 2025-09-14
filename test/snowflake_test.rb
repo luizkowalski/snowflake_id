@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class SnowflakeTest < ActiveSupport::TestCase
@@ -66,7 +68,7 @@ class SnowflakeTest < ActiveSupport::TestCase
 
   test "snowflake column method detects id without primary_key configuration" do
     assert_raises(Rails::Snowflake::Error, match: /Cannot use t.snowflake :id directly/) do
-      ActiveRecord::Migration.new.instance_eval do
+      ActiveRecord::Migration[7.1].new.instance_eval do
         create_table :bad_table do |t|
           t.snowflake :id
         end
@@ -76,7 +78,7 @@ class SnowflakeTest < ActiveSupport::TestCase
 
   test "snowflake column method detects id with primary_key set to false " do
     assert_raises(Rails::Snowflake::Error, match: /Cannot use t.snowflake :id directly/) do
-      ActiveRecord::Migration.new.instance_eval do
+      ActiveRecord::Migration[7.1].new.instance_eval do
         create_table :bad_table do |t|
           t.snowflake :id, primary_key: false
         end

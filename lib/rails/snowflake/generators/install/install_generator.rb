@@ -26,12 +26,6 @@ module Rails
         def create_migration_file
           migration_template "install_snowflake_id.rb.erb", File.join(db_migrate_path, "install_snowflake_id.rb")
         end
-
-        private
-
-        def migration_version
-          "[#{ActiveRecord::VERSION::STRING.to_f}]"
-        end
       end
     end
   end
