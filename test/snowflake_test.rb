@@ -64,12 +64,21 @@ class SnowflakeTest < ActiveSupport::TestCase
     assert user2.id < user3.id
   end
 
-  test "snowflake column method detects id conflict" do
-    # Test that trying to use t.snowflake :id raises helpful error
-    assert_raises(ArgumentError) do
+  test "snowflake column method detects id without primary_key configuration" do
+    assert_raises(Rails::Snowflake::Error, match: /Cannot use t.snowflake :id directly/) do
       ActiveRecord::Migration.new.instance_eval do
         create_table :bad_table do |t|
           t.snowflake :id
+        end
+      end
+    end
+  end
+
+  test "snowflake column method detects id with primary_key set to false " do
+    assert_raises(Rails::Snowflake::Error, match: /Cannot use t.snowflake :id directly/) do
+      ActiveRecord::Migration.new.instance_eval do
+        create_table :bad_table do |t|
+          t.snowflake :id, primary_key: false
         end
       end
     end
