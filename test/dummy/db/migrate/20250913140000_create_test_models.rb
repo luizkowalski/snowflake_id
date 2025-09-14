@@ -1,4 +1,4 @@
-class CreateTestModels < ActiveRecord::Migration[8.0]
+class CreateTestModels < ActiveRecord::Migration
   def change
     # Test model with snowflake primary key
     create_table :users, id: false do |t|
