@@ -2,8 +2,9 @@
 
 # Copied from https://github.com/mastodon/mastodon/blob/06803422da3794538cd9cd5c7ccd61a0694ef921/lib/mastodon/snowflake.rb
 
-module SnowflakeId
-  module Generator
+module Rails
+  module Snowflake
+    module Id
     DEFAULT_REGEX = /timestamp_id\('(?<seq_prefix>\w+)'/
 
     class Callbacks
@@ -13,7 +14,7 @@ module SnowflakeId
         if record.created_at.nil? || record.created_at >= now || record.created_at == record.updated_at || record.override_timestamps
           yield
         else
-          record.id = SnowflakeId::Generator.at(record.created_at)
+          record.id = Rails::Snowflake::Id.at(record.created_at)
           tries     = 0
 
           begin
@@ -104,7 +105,7 @@ module SnowflakeId
           $$ LANGUAGE plpgsql;
         SQL
       rescue StandardError => e
-        Rails.logger.warn "SnowflakeId: Could not ensure sequence for #{table_name}: #{e.message}"
+        Rails.logger.warn "Rails::Snowflake: Could not ensure sequence for #{table_name}: #{e.message}"
       end
 
       def at(timestamp, with_random: true)
@@ -183,6 +184,7 @@ module SnowflakeId
       def connection
         ActiveRecord::Base.connection
       end
+    end
     end
   end
 end

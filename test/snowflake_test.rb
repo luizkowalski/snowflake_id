@@ -2,7 +2,7 @@ require "test_helper"
 
 class SnowflakeTest < ActiveSupport::TestCase
   test "it has a version number" do
-    assert SnowflakeId::VERSION
+    assert Rails::Snowflake::VERSION
   end
 
   test "installs timestamp_id function on database setup" do

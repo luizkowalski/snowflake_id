@@ -1,12 +1,12 @@
-require_relative "lib/snowflake_id/version"
+require_relative "lib/rails/snowflake/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "snowflake_id"
-  spec.version     = SnowflakeId::VERSION
+  spec.name        = "rails-snowflake"
+  spec.version     = Rails::Snowflake::VERSION
   spec.authors     = [ "Luiz Eduardo Kowalski" ]
   spec.email       = [ "luizeduardokowalski@gmail.com" ]
   spec.homepage    = "https://github.com/luizkowalski/snowflake_id/"
-  spec.summary     = "Generate Snowflake IDs in Rails models."
+  spec.summary     = "Database-backed Snowflake IDs for Rails models."
   spec.description = "A Rails plugin that provides a simple way to generate unique Snowflake IDs for your ActiveRecord models."
   spec.license     = "MIT"
 
@@ -23,7 +23,6 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 7.2"
-  spec.add_dependency "zeitwerk", "~> 2.7"
 
   spec.required_ruby_version = ">= 3.2"
 end
