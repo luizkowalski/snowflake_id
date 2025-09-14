@@ -1,4 +1,6 @@
-# SnowflakeId
+# Rails::Snowflake
+
+[![CI](https://github.com/luizkowalski/snowflake_id/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/luizkowalski/snowflake_id/actions/workflows/ci.yml)
 
 A Rails plugin that provides Snowflake-like IDs for your ActiveRecord models with minimal configuration.
 
@@ -18,12 +20,12 @@ This ensures globally unique, time-sortable IDs that don't reveal the total coun
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "snowflake_id"
+gem "rails-snowflake"
 ```
 
-And then execute:
+And then execute the installer (note the underscore):
 ```bash
-rails generate snowflake_id:install
+rails generate rails_snowflake:install
 ```
 
 ## Quick Start
@@ -85,11 +87,11 @@ user = User.create!(name: "Alice")
 user.id  # => 115198501587747344
 
 # Convert ID back to timestamp
-SnowflakeId::Generator.to_time(user.id)
+Rails::Snowflake::Id.to_time(user.id)
 # => 2024-12-25 10:15:42 UTC
 
 # Generate ID for specific timestamp
-SnowflakeId::Generator.at(1.hour.ago)
+Rails::Snowflake::Id.at(1.hour.ago)
 # => 1766651542000012345
 ```
 

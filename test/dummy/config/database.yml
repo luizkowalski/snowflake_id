@@ -1,5 +1,5 @@
-# PostgreSQL configuration for testing RailsSnowflake
-# Since RailsSnowflake requires PostgreSQL-specific features like timestamp_id function
+# PostgreSQL configuration for testing Rails::Snowflake
+# Since Rails::Snowflake requires PostgreSQL-specific features like timestamp_id function
 
 default: &default
   adapter: postgresql

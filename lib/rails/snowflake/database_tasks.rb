@@ -6,11 +6,11 @@ def ensure_snowflake_sequences
 
   begin
     if ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
-      Rails.logger.debug "SnowflakeId: Ensure sequences exist for `timestamp_id` columns"
-      SnowflakeId::Generator.ensure_id_sequences_exist
+      Rails.logger.debug "Rails::Snowflake: Ensure sequences exist for `timestamp_id` columns"
+      Rails::Snowflake::Id.ensure_id_sequences_exist
     end
   rescue ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
-    Rails.logger.warn "SnowflakeId: Could not ensure sequences: #{e.message}"
+    Rails.logger.warn "Rails::Snowflake: Could not ensure sequences: #{e.message}"
   end
 end
 
