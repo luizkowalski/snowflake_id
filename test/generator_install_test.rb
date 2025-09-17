@@ -15,8 +15,10 @@ class GeneratorInstallTest < Rails::Generators::TestCase
   def test_generator_creates_migration
     run_generator
     files = Dir[File.join(destination_root, "db/migrate/*install_snowflake_id.rb")]
-    assert files.any?, "Expected install_snowflake_id migration to be created"
+
+    assert_predicate files, :any?, "Expected install_snowflake_id migration to be created"
     content = File.read(files.first)
+
     assert_match "Rails::Snowflake::Id.define_timestamp_id", content
   end
 end
