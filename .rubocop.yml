@@ -10,3 +10,6 @@ AllCops:
 
 Style/FrozenStringLiteralComment:
   Enabled: true
+
+Minitest/MultipleAssertions:
+  Enabled: false
