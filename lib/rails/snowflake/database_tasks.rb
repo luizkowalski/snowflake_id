@@ -16,6 +16,7 @@ def ensure_snowflake_sequences
     end
 
     Rails.logger.debug "Rails::Snowflake: Ensuring sequences for timestamp_id columns" if defined?(Rails)
+
     Rails::Snowflake::Id.ensure_id_sequences_exist
   rescue ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished => e
     Rails.logger.debug "Rails::Snowflake: Skipping sequence ensure (#{e.class}: #{e.message})" if defined?(Rails)
